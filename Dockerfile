@@ -180,3 +180,19 @@ RUN git clone https://github.com/php-memcached-dev/php-memcached /usr/src/php/ex
     && docker-php-ext-install memcached
 ### END PHP EXT
 ########################################################################################################################
+
+
+########################################################################################################################
+
+# Supervisor Config
+ADD ./supervisord.conf /etc/supervisord.conf
+
+# Start Supervisord
+ADD ./start.sh /start.sh
+RUN chmod 755 /start.sh
+
+# Expose Ports
+EXPOSE 443
+EXPOSE 80
+
+CMD ["/bin/bash", "/start.sh"]
