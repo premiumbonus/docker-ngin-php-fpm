@@ -152,3 +152,31 @@ RUN set -ex \
 ### END PHP-FPM
 ########################################################################################################################
 
+
+
+########################################################################################################################
+### PHP EXT
+RUN apt-get --yes --force-yes update && apt-get --yes --force-yes install \
+        libpq-dev \
+        libzip-dev \
+        libcurl4-gnutls-dev \
+        libpng12-dev \
+        libmcrypt-dev \
+        libmemcached-dev
+
+RUN /usr/local/bin/docker-php-ext-install \
+        pcntl \
+        pdo \
+        pdo_pgsql \
+        pgsql \
+        curl \
+        gd \
+        mcrypt
+
+RUN git clone https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
+    && cd /usr/src/php/ext/memcached \
+    && git checkout -b php7 origin/php7 \
+    && docker-php-ext-configure memcached \
+    && docker-php-ext-install memcached
+### END PHP EXT
+########################################################################################################################
